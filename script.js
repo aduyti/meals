@@ -28,7 +28,7 @@ const showError = errorMessage => {
 }
 const creatMealCard = (id, area, category, name, thumb) => {
     const cardDiv = document.createElement('div');
-    cardDiv.className = 'col-3 m-3';
+    cardDiv.className = 'col-3 mb-3';
     cardDiv.innerHTML = `<div class="card" style="width: 18rem;">
         <img src="${thumb}" class="card-img-top" alt="${name}">
         <div class="card-body">
@@ -47,9 +47,38 @@ const loadDetail = async (id) => {
 const showMealDetail = meal => {
     console.log(meal);
     if (meal) {
-        updateMealDetail(meal);
+        updateMealDetail(meal[0]);
     }
     else {
-        showError("No information")
+        showError("No information");
     }
+}
+const updateMealDetail = (meal) => {
+    // { strArea, strCategory, strMealThumb, strMeal, strInstructions, strTags, strYoutube, strMeasure1, strIngredient1 }
+    document.getElementById('staticBackdropLabel').innerText = meal.strMeal;
+    document.getElementById('modalContent').innerText = '';
+    const ingredientsList = document.createElement('ol');
+    ingredientsList.innerHTML = '<h6>Ingredient</h6>';
+    let i = 1;
+    while (meal[`strIngredient${i}`].length > 0) {
+        const ingredients = meal[`strIngredient${i}`] + " " + meal[`strMeasure${i}`];
+        const list = document.createElement("li");
+        list.innerText = ingredients;
+        i++;
+        ingredientsList.appendChild(list);
+    }
+    const img = document.createElement("img");
+    img.src = meal.strMealThumb;
+    img.width = 350;
+    const h6 = document.createElement("h6");
+    h6.innerText = "Recipe";
+    const recipe = document.createElement("p");
+    recipe.innerText = meal.strInstructions
+    document.getElementById('modalContent').appendChild(img);
+    document.getElementById('modalContent').appendChild(ingredientsList);
+    document.getElementById('modalContent').appendChild(h6);
+    document.getElementById('modalContent').appendChild(recipe);
+    document.getElementById('youtube').addEventListener('click', () => {
+        window.open(meal.strYoutube, '_blank');
+    })
 }
