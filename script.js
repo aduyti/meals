@@ -27,7 +27,6 @@ const showError = errorMessage => {
     console.log(errorMessage);
 }
 const creatMealCard = (id, area, category, name, thumb) => {
-    console.log(id, area, category, name, thumb);
     const cardDiv = document.createElement('div');
     cardDiv.className = 'col-3 m-3';
     cardDiv.innerHTML = `<div class="card" style="width: 18rem;">
@@ -35,8 +34,22 @@ const creatMealCard = (id, area, category, name, thumb) => {
         <div class="card-body">
             <h5 class="card-title">${name}</h5>
             <p class="card-text">Category: ${category}<br/>Region: ${area}</p>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Details</button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="loadDetail(${id})">Details</button>
         </div>
     </div>`;
     document.getElementById('search-result-block').appendChild(cardDiv);
+}
+const loadDetail = async (id) => {
+    const res = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
+    const data = await res.json();
+    showMealDetail(data.meals);
+}
+const showMealDetail = meal => {
+    console.log(meal);
+    if (meal) {
+        updateMealDetail(meal);
+    }
+    else {
+        showError("No information")
+    }
 }
