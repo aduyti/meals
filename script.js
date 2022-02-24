@@ -24,7 +24,11 @@ const showSearchResult = meals => {
     }
 }
 const showError = errorMessage => {
-    console.log(errorMessage);
+    const h2 = document.createElement("h2");
+    h2.innerText = errorMessage;
+    h2.className = "text-danger text-center fst-italic";
+
+    document.getElementById('search-result-block').appendChild(h2);
 }
 const creatMealCard = (id, area, category, name, thumb) => {
     const cardDiv = document.createElement('div');
@@ -45,7 +49,6 @@ const loadDetail = async (id) => {
     showMealDetail(data.meals);
 }
 const showMealDetail = meal => {
-    console.log(meal);
     if (meal) {
         updateMealDetail(meal[0]);
     }
@@ -58,7 +61,8 @@ const updateMealDetail = (meal) => {
     document.getElementById('staticBackdropLabel').innerText = meal.strMeal;
     document.getElementById('modalContent').innerText = '';
     const ingredientsList = document.createElement('ol');
-    ingredientsList.innerHTML = '<h6>Ingredient</h6>';
+    const ih6 = document.createElement("h6");
+    ih6.innerHTML = '<br/>Ingredient';
     let i = 1;
     while (meal[`strIngredient${i}`].length > 0) {
         const ingredients = meal[`strIngredient${i}`] + " " + meal[`strMeasure${i}`];
@@ -70,13 +74,14 @@ const updateMealDetail = (meal) => {
     const img = document.createElement("img");
     img.src = meal.strMealThumb;
     img.width = 350;
-    const h6 = document.createElement("h6");
-    h6.innerText = "Recipe";
+    const rh6 = document.createElement("h6");
+    rh6.innerHTML = "<br/>Recipe";
     const recipe = document.createElement("p");
     recipe.innerText = meal.strInstructions
     document.getElementById('modalContent').appendChild(img);
+    document.getElementById('modalContent').appendChild(ih6);
     document.getElementById('modalContent').appendChild(ingredientsList);
-    document.getElementById('modalContent').appendChild(h6);
+    document.getElementById('modalContent').appendChild(rh6);
     document.getElementById('modalContent').appendChild(recipe);
     document.getElementById('youtube').addEventListener('click', () => {
         window.open(meal.strYoutube, '_blank');
