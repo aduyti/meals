@@ -10,11 +10,24 @@ document.getElementById('search-button').addEventListener('click', () => {
         showError("Write Something to Search.");
     }
 })
+
 const loadSearchResult = async (searchKey) => {
+    displayState('result-loader', 'block');
     const ras = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${searchKey}`);
     const data = await ras.json();
     showSearchResult(data.meals);
+    displayState('result-loader', 'none');
 }
+/*
+const loadSearchResult = (searchKey) => {
+    fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${searchKey}`)
+        .then(res => res.json())
+        .then(data => {
+            showSearchResult(data.meals);
+            displayState('result-loader', 'none');
+        })
+}
+*/
 const showSearchResult = meals => {
     if (meals) {
         meals.forEach(meal => creatMealCard(meal.idMeal, meal.strArea, meal.strCategory, meal.strMeal, meal.strMealThumb))
@@ -32,7 +45,7 @@ const showError = errorMessage => {
 }
 const creatMealCard = (id, area, category, name, thumb) => {
     const cardDiv = document.createElement('div');
-    cardDiv.className = 'col-3 mb-3';
+    cardDiv.className = 'col-3 my-3';
     cardDiv.innerHTML = `<div class="card" style="width: 18rem;">
         <img src="${thumb}" class="card-img-top" alt="${name}">
         <div class="card-body">
@@ -44,9 +57,14 @@ const creatMealCard = (id, area, category, name, thumb) => {
     document.getElementById('search-result-block').appendChild(cardDiv);
 }
 const loadDetail = async (id) => {
+    document.getElementById('staticBackdropLabel').innerText = '';
+    document.getElementById('modalContent').innerText = '';
+    displayState('youtube', 'none');
+    displayState('modal-loader', 'block');
     const res = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
     const data = await res.json();
     showMealDetail(data.meals);
+    displayState('modal-loader', 'none');
 }
 const showMealDetail = meal => {
     if (meal) {
@@ -83,12 +101,14 @@ const updateMealDetail = (meal) => {
     document.getElementById('modalContent').appendChild(ingredientsList);
     document.getElementById('modalContent').appendChild(rh6);
     document.getElementById('modalContent').appendChild(recipe);
+    displayState('youtube', 'block');
     document.getElementById('youtube').addEventListener('click', () => {
         window.open(meal.strYoutube, '_blank');
     })
 }
 
-const loaderState = (destination, visibility) => {
-    const loader = document.getElementById(destination);
-    loader.style.visibility = visibility;
+const displayState = (destination, visibility) => {
+    document.getElementById(destination).style.display = visibility;
 }
+displayState('result-loader', 'none');
+displayState('modal-loader', 'none');
