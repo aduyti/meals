@@ -13,12 +13,17 @@
 
 <body class="bg-light">
     <main class="container">
+
         <div class="input-group mb-3 p-5 w-50 mx-auto">
             <input type="text" id="search-input" class="form-control" placeholder="Search for Meal" aria-label="Search"
                 aria-describedby="search-button">
             <button class="btn btn-primary" type="button" id="search-button">SEARCH</button>
         </div>
-
+        <div class="text-center" id="result-loader">
+            <div class="spinner-border" style="width: 100px; height: 100px;" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
         <div id="search-result-block" class="row justify-content-center"></div>
         <!-- Button trigger modal -->
         <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
@@ -34,8 +39,13 @@
                         <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body" id="modalContent">
-
+                    <div class="modal-body">
+                        <div class="text-center" id="modal-loader">
+                            <div class="spinner-border" style="width: 50px; height: 50px;" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                        <div id="modalContent"></div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" id="youtube">Watch Recipe On YouTube</button>
