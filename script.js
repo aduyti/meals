@@ -87,3 +87,8 @@ const updateMealDetail = (meal) => {
         window.open(meal.strYoutube, '_blank');
     })
 }
+
+const loaderState = (destination, visibility) => {
+    const loader = document.getElementById(destination);
+    loader.style.visibility = visibility;
+}
